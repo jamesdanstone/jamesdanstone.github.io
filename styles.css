@@ -25,6 +25,7 @@ header {
     position: relative;
 }
 
+/* Logo */
 .logo {
     display: flex;
     align-items: center;
@@ -43,11 +44,12 @@ header {
     display: flex;
     flex-direction: column;
     gap: 5px;
+    z-index: 100;
 }
 
-.hamburger div {
-    width: 25px;
-    height: 3px;
+.hamburger .bar {
+    width: 30px;
+    height: 4px;
     background-color: white;
     transition: 0.3s;
 }
@@ -56,13 +58,14 @@ header {
 .nav-menu {
     position: absolute;
     top: 60px;
-    right: 20px;
+    right: 0;
     background-color: #444;
     width: 200px;
     display: none;
     flex-direction: column;
     border-radius: 5px;
     overflow: hidden;
+    z-index: 99;
 }
 
 .nav-menu a {
@@ -112,25 +115,16 @@ iframe {
         width: 100%;
         height: 200px;
     }
-}
 
-/* Portfolio Grid */
-.portfolio-grid {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 20px;
-}
+    .hamburger {
+        display: flex;
+    }
 
-.portfolio-item {
-    width: 150px;
-    height: 150px;
-    background-color: #ccc;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2em;
-    border-radius: 10px;
+    .nav-menu {
+        width: 100%;
+        top: 60px;
+        right: 0;
+    }
 }
 
 /* Footer */
