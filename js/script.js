@@ -1,29 +1,17 @@
-document.addEventListener("DOMContentLoaded", function () {
-    function loadComponent(id, file, callback) {
-        fetch(file)
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById(id).innerHTML = data;
-                if (callback) callback();
-            })
-            .catch(error => console.error(`Error loading ${file}:`, error));
-    }
+document.addEventListener("DOMContentLoaded", function() {
+    // Load header and footer
+    fetch("header.html").then(response => response.text()).then(data => {
+        document.getElementById("header-placeholder").innerHTML = data;
+    });
 
-    loadComponent("header-placeholder", "header.html", initializeMenu);
-    loadComponent("footer-placeholder", "footer.html");
+    fetch("footer.html").then(response => response.text()).then(data => {
+        document.getElementById("footer-placeholder").innerHTML = data;
+    });
 
-    function initializeMenu() {
-        const hamburger = document.getElementById("hamburger");
-        const navMenu = document.getElementById("navMenu");
-
-        hamburger.addEventListener("click", function () {
-            navMenu.classList.toggle("active");
-        });
-
-        document.addEventListener("click", function (event) {
-            if (!hamburger.contains(event.target) && !navMenu.contains(event.target)) {
-                navMenu.classList.remove("active");
-            }
-        });
-    }
+    // Mobile Menu Toggle
+    document.addEventListener("click", function(event) {
+        if (event.target.matches(".hamburger, .hamburger *")) {
+            document.getElementById("navMenu").classList.toggle("active");
+        }
+    });
 });
