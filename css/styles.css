@@ -109,3 +109,52 @@ footer {
     text-decoration: none;
     margin: 0 10px;
 }
+
+.portfolio-grid {
+    display: grid;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.project-item {
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    color: inherit;
+    display: block;
+    overflow: hidden;
+    text-decoration: none;
+    transition: transform 0.2s;
+}
+
+.project-item:hover {
+    transform: scale(1.05);
+}
+
+.project-item img {
+    display: block;
+    height: auto;
+    max-width: 100%;
+}
+
+.project-item h2 {
+    font-size: 1.25rem;
+    margin: 0.5rem;
+}
+
+.project-item p {
+    margin: 0.5rem;
+}
+
+/* Responsive Grid */
+@media (min-width: 600px) {
+    .portfolio-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 599px) {
+    .portfolio-grid {
+        grid-template-columns: 1fr;
+    }
+}
