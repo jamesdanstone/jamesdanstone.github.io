@@ -12,6 +12,12 @@ body {
     background-color: #f9f9f9;
 }
 
+/* Text content styling */
+.content p {
+    margin-bottom: 1.5rem;
+    text-align: justify;
+}
+
 /* Container */
 .container {
     width: 90%;
