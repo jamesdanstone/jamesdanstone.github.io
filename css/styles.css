@@ -103,7 +103,7 @@ nav ul li a {
     margin-top: 2rem;
 }
 
-.image-container iframe {
+.image-container frame {
     width: 80%;
     max-width: 800px;
     height: 450px;
