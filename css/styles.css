@@ -96,6 +96,18 @@ nav ul li a {
     height: 450px;
 }
 
+/* Image Section */
+.image-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.image-container iframe {
+    width: 80%;
+    max-width: 800px;
+    height: 450px;
+}
 /* Footer */
 footer {
     background: #333;
