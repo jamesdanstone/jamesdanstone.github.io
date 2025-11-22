@@ -304,3 +304,17 @@ button:hover {
         grid-template-columns: 1fr;
     }
 }
+
+/* Tablet — 85% width */
+@media (max-width: 1024px) {
+    .video-wrapper {
+        width: 85%;
+    }
+}
+
+/* Mobile — 95% width */
+@media (max-width: 600px) {
+    .video-wrapper {
+        width: 95%;
+    }
+}
