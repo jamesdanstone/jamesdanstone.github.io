@@ -46,6 +46,12 @@ body {
 .logo-svg {
     height: 40px;
     width: auto;
+    color: white;
+}
+
+/* When menu is open: logo becomes dark */
+.menu-open .logo-svg {
+    color: black;
 }
 
 .logo a {
