@@ -30,7 +30,6 @@ header {
     background: #111;
     color: #fff;
     padding: 1rem 0;
-    border-bottom: 1px solid #eaeaea;
 }
 
 .logo {
@@ -76,7 +75,7 @@ nav ul li a {
 /* Hero Section */
 .hero {
     background: #111;
-    padding: 4rem 0;
+    padding: 2rem 0;
     text-align: center;
 }
 
@@ -93,11 +92,11 @@ nav ul li a {
 .video-container {
     display: flex;
     justify-content: center;
-    margin-top: 2rem;
+    margin-top: 1rem;
 }
 
 .video-container iframe {
-    width: 80%;
+    width: width 90%;
     max-width: 800px;
     height: 450px;
 }
