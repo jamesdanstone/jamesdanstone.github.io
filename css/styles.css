@@ -43,6 +43,11 @@ body {
     z-index: 9999;
 }
 
+.logo-svg {
+    height: 40px;
+    width: auto;
+}
+
 .logo a {
     font-size: 24px;
     font-weight: 700;
