@@ -1,17 +1,15 @@
-document.addEventListener("DOMContentLoaded", function() {
-    // Load header and footer
-    fetch("header.html").then(response => response.text()).then(data => {
-        document.getElementById("header-placeholder").innerHTML = data;
-    });
+// Load header.html into the page
+fetch("header.html")
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById("header").innerHTML = data;
 
-    fetch("footer.html").then(response => response.text()).then(data => {
-        document.getElementById("footer-placeholder").innerHTML = data;
-    });
+        // After header loads, attach hamburger functionality
+        const hamburger = document.getElementById("hamburger");
+        const menuOverlay = document.getElementById("menuOverlay");
 
-    // Mobile Menu Toggle
-    document.addEventListener("click", function(event) {
-        if (event.target.matches(".hamburger, .hamburger *")) {
-            document.getElementById("navMenu").classList.toggle("active");
-        }
+        hamburger.addEventListener("click", () => {
+            hamburger.classList.toggle("active");
+            menuOverlay.classList.toggle("active");
+        });
     });
-});
