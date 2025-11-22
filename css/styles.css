@@ -9,7 +9,7 @@ body {
     font-family: 'Helvetica Neue', Arial, sans-serif;
     color: #fff;
     line-height: 1.6;
-    background-color: #333;
+    background-color: #111;
 }
 
 /* Text content styling */
@@ -27,7 +27,7 @@ body {
 
 /* Header */
 header {
-    background: #333;
+    background: #111;
     color: #fff;
     padding: 1rem 0;
     border-bottom: 1px solid #eaeaea;
@@ -75,7 +75,7 @@ nav ul li a {
 
 /* Hero Section */
 .hero {
-    background: #333;
+    background: #111;
     padding: 4rem 0;
     text-align: center;
 }
@@ -116,7 +116,7 @@ nav ul li a {
 }
 /* Footer */
 footer {
-    background: #333;
+    background: #111;
     color: #fff;
     text-align: center;
     padding: 1rem 0;
@@ -135,7 +135,7 @@ footer {
 }
 
 .project-item {
-    background-color: #333;
+    background-color: #111;
     border: 1px solid #ddd;
     border-radius: 8px;
     color: inherit;
@@ -195,7 +195,7 @@ button {
     margin-top: 1rem;
     padding: 0.75rem;
     background-color: #fff;
-    color: #333;
+    color: #111;
     border: none;
     border-radius: 4px;
     cursor: pointer;
