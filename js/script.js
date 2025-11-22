@@ -11,5 +11,6 @@ fetch("header.html")
         hamburger.addEventListener("click", () => {
             hamburger.classList.toggle("active");
             menuOverlay.classList.toggle("active");
+            document.body.classList.toggle("menu-open");
         });
     });
