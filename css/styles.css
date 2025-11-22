@@ -76,6 +76,11 @@ body {
     transition: 0.3s ease;
 }
 
+/* Hamburger bars become black when menu is open */
+.menu-open .hamburger span {
+    background: #111; /* black bars */
+}
+
 /* ============================
    FULLSCREEN MENU OVERLAY
 ============================ */
