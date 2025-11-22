@@ -40,7 +40,7 @@ body {
     top: 0;
     left: 0;
     background: transparent;
-    z-index: 9999;
+    z-index: 9000; /* BELOW OVERLAY, ABOVE CONTENT */
 }
 
 .logo-svg {
@@ -50,16 +50,9 @@ body {
     color: white;
 }
 
-/* When menu is open: logo becomes dark */
+/* When menu is open: logo turns black */
 .menu-open .logo-svg {
     color: black;
-}
-
-.logo a {
-    font-size: 24px;
-    font-weight: 700;
-    color: #FFF;
-    text-decoration: none;
 }
 
 /* Hamburger button */
@@ -70,6 +63,8 @@ body {
     flex-direction: column;
     justify-content: space-between;
     cursor: pointer;
+    position: relative;
+    z-index: 9500; /* ABOVE HEADER */
 }
 
 .hamburger span {
@@ -97,7 +92,7 @@ body {
     align-items: center;
     pointer-events: none;
     opacity: 0;
-    z-index: 9999;
+    z-index: 9999; /* TOP LAYER */
     transition: opacity 0.3s ease;
 }
 
@@ -136,11 +131,15 @@ body {
     transform: translateY(-9px) rotate(-45deg);
 }
 
-/* Push content down below the fixed header */
+/* Push content down below fixed header */
 main {
     padding-top: 90px;
 }
-/* Hero Section */
+
+/* ============================
+   HERO SECTION
+============================ */
+
 .hero {
     background: #111;
     padding: 2rem 0;
@@ -157,15 +156,18 @@ main {
     font-size: 2.5rem;
 }
 
-/* Default (desktop) — 70% width */
+/* ============================
+   VIDEO WRAPPER (RESPONSIVE)
+============================ */
+
 .video-wrapper {
     width: 70%;
     margin: 0 auto;
     position: relative;
-    padding-top: 56.25%; /* 16:9 ratio */
+    padding-top: 56.25%; /* 16:9 */
+    z-index: 1; /* BELOW MENU */
 }
 
-/* Responsive iframe fill */
 .video-wrapper iframe {
     position: absolute;
     top: 0;
@@ -173,22 +175,20 @@ main {
     width: 100%;
     height: 100%;
     border: none;
+    z-index: 1; /* ENSURES MENU OVERLAYS IT */
 }
 
-/* Video Section */
-.video-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 1rem;
-}
-
+/* Kill old broken video-container rules */
 .video-container iframe {
-    width: width 90%;
+    width: 100%;
     max-width: 1200px;
     max-height: 450px;
 }
 
-/* Image container styling */
+/* ============================
+   IMAGE CONTAINER
+============================ */
+
 .image-container {
     display: flex;
     justify-content: center;
@@ -200,7 +200,11 @@ main {
     max-width: 80%;
     width: 80%;
 }
-/* Footer */
+
+/* ============================
+   FOOTER
+============================ */
+
 footer {
     background: #111;
     color: #fff;
@@ -213,6 +217,10 @@ footer {
     text-decoration: none;
     margin: 0 10px;
 }
+
+/* ============================
+   PORTFOLIO GRID
+============================ */
 
 .portfolio-grid {
     display: grid;
@@ -250,6 +258,10 @@ footer {
     margin: 0.5rem;
 }
 
+/* ============================
+   CONTACT FORM
+============================ */
+
 #contact {
     margin: 2rem auto;
     max-width: 600px;
@@ -258,63 +270,4 @@ footer {
 
 #contact h2 {
     text-align: center;
-    margin-bottom: 1rem;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-}
-
-label {
-    margin-top: 1rem;
-}
-
-input, textarea {
-    padding: 0.5rem;
-    margin-top: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-button {
-    margin-top: 1rem;
-    padding: 0.75rem;
-    background-color: #fff;
-    color: #111;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-button:hover {
-    background-color: #555;
-}
-
-/* Responsive Grid */
-@media (min-width: 600px) {
-    .portfolio-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 599px) {
-    .portfolio-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* Tablet — 85% width */
-@media (max-width: 1024px) {
-    .video-wrapper {
-        width: 85%;
-    }
-}
-
-/* Mobile — 95% width */
-@media (max-width: 600px) {
-    .video-wrapper {
-        width: 95%;
-    }
-}
+    margin-b
