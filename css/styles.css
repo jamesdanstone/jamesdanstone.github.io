@@ -110,7 +110,7 @@ body {
     align-items: center;
     pointer-events: none;
     opacity: 0;
-    z-index: 9999; /* Top layer */
+    z-index: 9000; /* Top layer */
     transition: opacity 0.3s ease;
 }
 
