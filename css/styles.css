@@ -156,6 +156,24 @@ main {
     font-size: 2.5rem;
 }
 
+/* Default (desktop) — 70% width */
+.video-wrapper {
+    width: 70%;
+    margin: 0 auto;
+    position: relative;
+    padding-top: 56.25%; /* 16:9 ratio */
+}
+
+/* Responsive iframe fill */
+.video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
 /* Video Section */
 .video-container {
     display: flex;
@@ -213,7 +231,7 @@ footer {
 }
 
 .project-item:hover {
-    transform: scale(1.05);
+    transform: scale(.95);
 }
 
 .project-item img {
