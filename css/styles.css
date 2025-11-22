@@ -1,133 +1,5 @@
 /* ============================
-   RESET/* ============================
    RESET
-============================ */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-    color: #fff;
-    line-height: 1.6;
-    background-color: #111;
-}
-
-/* Text content styling */
-.content p {
-    margin-bottom: 1.5rem;
-    text-align: justify;
-}
-
-/* Container */
-.container {
-    width: 90%;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-/* ============================
-   HEADER + HAMBURGER
-============================ */
-
-.site-header {
-    height: 70px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-    position: fixed;
-    width: 100%;
-    top: 0;
-    left: 0;
-    background: transparent;
-    z-index: 9400; /* BELOW OVERLAY, ABOVE CONTENT */
-}
-
-.logo-svg {
-    height: 70px;
-    padding: 10px;
-    width: auto;
-    color: white;
-}
-
-/* Logo turns black when menu open */
-.menu-open .logo-svg {
-    color: black;
-}
-
-/* Hamburger button */
-.hamburger {
-    width: 30px;
-    height: 22px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    cursor: pointer;
-    position: relative;
-    z-index: 9500; /* Above header */
-}
-
-.hamburger span {
-    display: block;
-    height: 4px;
-    width: 100%;
-    background: #FFF;
-    border-radius: 2px;
-    transition: 0.3s ease, background 0.3s ease;
-}
-
-/* Hamburger bars black when menu open */
-.menu-open .hamburger span {
-    background: #111;
-}
-
-/* Hamburger animation */
-.hamburger.active span:nth-child(1) {
-    transform: translateY(9px) rotate(45deg);
-}
-.hamburger.active span:nth-child(2) {
-    opacity: 0;
-}
-.hamburger.active span:nth-child(3) {
-    transform: translateY(-9px) rotate(-45deg);
-}
-
-/* ============================
-   FULLSCREEN MENU OVERLAY
-============================ */
-
-.menu-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    pointer-events: none;
-    opacity: 0;
-    z-index: 9000; /* Top layer */
-    transition: opacity 0.3s ease;
-}
-
-.menu-overlay.active {
-    pointer-events: auto;
-    opacity: 1;
-}
-
-.overlay-nav {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-}
-
-.overlay-nav a
-
 ============================ */
 * {
     margin: 0;
@@ -382,6 +254,7 @@ footer {
     border-radius: 12px;
     cursor: pointer;
     transition: transform 0.4s ease, box-shadow 0.4s ease;
+    display: block;
 }
 
 /* Project image */
@@ -392,6 +265,58 @@ footer {
     transition: transform 0.5s ease, filter 0.5s ease;
 }
 
+/* Overlay */
+.project-item .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    opacity: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 1rem;
+    transition: opacity 0.4s ease;
+}
+
 /* Hover effects */
 .project-item:hover {
-    transform: translateY(-
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.project-item:hover img {
+    transform: scale(1.05);
+    filter: brightness(0.85);
+}
+
+.project-item:hover .overlay {
+    opacity: 1;
+}
+
+.project-item .overlay h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.project-item .overlay p {
+    font-size: 1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .project-item:hover {
+        transform: translateY(-5px);
+    }
+    .project-item .overlay h2 {
+        font-size: 1.25rem;
+    }
+    .project-item .overlay p {
+        font-size: 0.9rem;
+    }
+}
