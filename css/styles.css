@@ -80,7 +80,8 @@ nav ul li a {
 }
 
 .hero-content {
-    max-width: 800px;
+    width: 90%;
+    max-width: 1200px;
     margin: 0 auto;
 }
 
@@ -97,8 +98,8 @@ nav ul li a {
 
 .video-container iframe {
     width: width 90%;
-    max-width: 800px;
-    height: 450px;
+    max-width: 1200px;
+    max-height: 450px;
 }
 
 /* Image container styling */
