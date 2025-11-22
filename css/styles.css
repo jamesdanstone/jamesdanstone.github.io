@@ -40,7 +40,7 @@ body {
     top: 0;
     left: 0;
     background: transparent;
-    z-index: 9000; /* BELOW OVERLAY, ABOVE CONTENT */
+    z-index: 9400; /* BELOW OVERLAY, ABOVE CONTENT */
 }
 
 .logo-svg {
@@ -92,7 +92,7 @@ body {
     align-items: center;
     pointer-events: none;
     opacity: 0;
-    z-index: 9999; /* TOP LAYER */
+    z-index: 9000; /* TOP LAYER */
     transition: opacity 0.3s ease;
 }
 
