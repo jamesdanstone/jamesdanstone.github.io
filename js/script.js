@@ -14,3 +14,13 @@ fetch("header.html")
             document.body.classList.toggle("menu-open");
         });
     });
+//Masonry grid js
+document.addEventListener("DOMContentLoaded", () => {
+    const items = document.querySelectorAll(".project-item");
+
+    items.forEach(item => {
+        const height = item.querySelector("img").naturalHeight;
+        const rowSpan = Math.ceil((height / 10));
+        item.style.gridRowEnd = `span ${rowSpan}`;
+    });
+});
