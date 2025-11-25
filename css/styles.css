@@ -10,13 +10,27 @@
 body {
     font-family: 'Helvetica Neue', Arial, sans-serif;
     color: #fff;
-    background-color: #111;
     line-height: 1.6;
+    background-color: #111;
+}
+
+/* Text content styling */
+.content p {
+    margin-bottom: 1.5rem;
+    text-align: justify;
+}
+
+/* Container */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 /* ============================
-   HEADER
+   HEADER + HAMBURGER
 ============================ */
+
 .site-header {
     height: 70px;
     display: flex;
@@ -26,37 +40,24 @@ body {
     position: fixed;
     width: 100%;
     top: 0;
-    z-index: 9400;
+    left: 0;
     background: transparent;
+    z-index: 9400; /* BELOW OVERLAY, ABOVE CONTENT */
 }
 
 .logo-svg {
     height: 70px;
     padding: 10px;
+    width: auto;
+    color: white;
 }
 
-/* Default logo color (white) */
-header .logo svg path,
-header .logo svg rect,
-header .logo svg circle,
-header .logo svg line,
-header .logo svg polygon,
-header .logo svg polyline {
-    stroke: white !important;
+/* Logo turns black when menu open */
+.menu-open .logo-svg {
+    color: black;
 }
 
-/* When menu is open */
-.menu-open header .logo svg path,
-.menu-open header .logo svg rect,
-.menu-open header .logo svg circle,
-.menu-open header .logo svg line,
-.menu-open header .logo svg polygon,
-.menu-open header .logo svg polyline {
-    stroke: black !important;
-}
-
-
-/* Hamburger */
+/* Hamburger button */
 .hamburger {
     width: 30px;
     height: 22px;
@@ -64,20 +65,25 @@ header .logo svg polyline {
     flex-direction: column;
     justify-content: space-between;
     cursor: pointer;
-    z-index: 9500;
+    position: relative;
+    z-index: 9500; /* Above header */
 }
 
 .hamburger span {
+    display: block;
     height: 4px;
-    background: #fff;
+    width: 100%;
+    background: #FFF;
     border-radius: 2px;
-    transition: 0.3s ease;
+    transition: 0.3s ease, background 0.3s ease;
 }
 
+/* Hamburger bars black when menu open */
 .menu-open .hamburger span {
     background: #111;
 }
 
+/* Hamburger animation */
 .hamburger.active span:nth-child(1) {
     transform: translateY(9px) rotate(45deg);
 }
@@ -89,102 +95,228 @@ header .logo svg polyline {
 }
 
 /* ============================
-   FULLSCREEN MENU
+   FULLSCREEN MENU OVERLAY
 ============================ */
+
 .menu-overlay {
     position: fixed;
-    inset: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
     background: white;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-    z-index: 9000;
     display: flex;
     justify-content: center;
     align-items: center;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 9000; /* Top layer */
+    transition: opacity 0.3s ease;
 }
 
 .menu-overlay.active {
-    opacity: 1;
     pointer-events: auto;
+    opacity: 1;
 }
 
 .overlay-nav {
     display: flex;
     flex-direction: column;
     gap: 30px;
-    text-align: center;
 }
 
 .overlay-nav a {
     font-size: 28px;
-    color: #111;
     text-decoration: none;
+    color: #111;
+    font-weight: 500;
+    text-align: center;
 }
 
 /* ============================
-   MAIN SPACING
+   MAIN CONTENT SPACING
 ============================ */
+
 main {
-    padding-top: 90px;
+    padding-top: 90px; /* space for fixed header */
 }
 
 /* ============================
-   MASONRY GRID (100% WORKING)
+   HERO SECTION
 ============================ */
-/* Masonry Layout – max 2 per row */
-.portfolio-grid {
-    width: 90%;
-    max-width: 1400px;
-    margin: 150px auto 80px auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-}
 
-/* Each project item keeps its aspect ratio */
-.project-item {
-    position: relative;
-    display: block;
-    width: 100%;
-    aspect-ratio: var(--aspect-ratio);
-    overflow: hidden;
-    border-radius: 8px;
+.hero {
     background: #111;
+    padding: 2rem 0;
+    text-align: center;
 }
 
-/* Images fill container without distortion */
-.project-item img {
+.hero-content {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.hero h2 {
+    font-size: 2.5rem;
+}
+
+/* ============================
+   VIDEO WRAPPER (RESPONSIVE)
+============================ */
+
+.video-wrapper {
+    width: 70%;
+    margin: 0 auto;
+    position: relative;
+    padding-top: 56.25%; /* 16:9 */
+    z-index: 1; /* BELOW MENU */
+}
+
+.video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    border: none;
+    z-index: 1; /* ENSURES MENU OVERLAYS IT */
+}
+
+/* Kill old broken video-container rules */
+.video-container iframe {
+    width: 100%;
+    max-width: 1200px;
+    max-height: 450px;
+}
+
+/* Tablet — 85% width */
+@media (max-width: 1024px) {
+    .video-wrapper {
+        width: 85%;
+    }
+}
+
+/* Mobile — 95% width */
+@media (max-width: 600px) {
+    .video-wrapper {
+        width: 95%;
+    }
+}
+
+/* ============================
+   IMAGE CONTAINER
+============================ */
+
+.image-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+.image-container img {
+    border-radius: 8px;
+    max-width: 80%;
+    width: 80%;
+}
+
+/* ============================
+   FOOTER
+============================ */
+
+footer {
+    background: #111;
+    color: #fff;
+    text-align: center;
+    padding: 1rem 0;
+}
+
+.social-links a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+/* ============================
+   PORTFOLIO GRID (MODERN + DYNAMIC)
+============================ */
+
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    padding: 2rem 1rem;
+}
+
+.project-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
     display: block;
 }
 
-/* Overlay animation */
+/* Project image */
+.project-item img {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: transform 0.5s ease, filter 0.5s ease;
+}
+
+/* Overlay */
 .project-item .overlay {
     position: absolute;
-    inset: 0;
-    background: rgba(0,0,0,0.55);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    color: #fff;
     opacity: 0;
-    transition: opacity .35s ease;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: 25px;
-    color: white;
+    padding: 1rem;
+    transition: opacity 0.4s ease;
+}
+
+/* Hover effects */
+.project-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.project-item:hover img {
+    transform: scale(1.05);
+    filter: brightness(0.85);
 }
 
 .project-item:hover .overlay {
     opacity: 1;
 }
 
-/* MOBILE: one column */
-@media (max-width: 800px) {
-    .portfolio-grid {
-        grid-template-columns: 1fr;
-        gap: 25px;
+.project-item .overlay h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.project-item .overlay p {
+    font-size: 1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .project-item:hover {
+        transform: translateY(-5px);
+    }
+    .project-item .overlay h2 {
+        font-size: 1.25rem;
+    }
+    .project-item .overlay p {
+        font-size: 0.9rem;
     }
 }
