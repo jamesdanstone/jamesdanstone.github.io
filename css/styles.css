@@ -1,6 +1,6 @@
-/* --------------------------------------
-   GLOBAL STYLE RESET
--------------------------------------- */
+/* ============================
+   RESET
+============================ */
 * {
     margin: 0;
     padding: 0;
@@ -8,209 +8,337 @@
 }
 
 body {
-    background: #000;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
     color: #fff;
-    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    background-color: #111;
 }
 
-/* --------------------------------------
-   HEADER + LOGO + HAMBURGER
--------------------------------------- */
-header {
-    width: 100%;
-    padding: 20px 30px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 9999;
+/* Text content styling */
+.content p {
+    margin-bottom: 1.5rem;
+    text-align: justify;
+}
+
+/* Container */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* ============================
+   HEADER + HAMBURGER
+============================ */
+
+.site-header {
+    height: 70px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 0 20px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background: transparent;
+    z-index: 9400;
 }
 
-header .logo svg {
-    width: 80px;
-    height: auto;
-    transition: filter 0.3s ease;
+.logo-svg {
+    height: 70px;
+    padding: 10px;
+    width: auto;
+    color: white;
 }
 
-/* invert when menu is open */
-.menu-open header .logo svg {
-    filter: invert(1);
+.menu-open .logo-svg {
+    color: black;
 }
 
-/* Hamburger */
 .hamburger {
     width: 30px;
-    height: 24px;
-    position: relative;
+    height: 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     cursor: pointer;
-    z-index: 10000;
+    position: relative;
+    z-index: 9500;
 }
 
 .hamburger span {
-    position: absolute;
+    display: block;
+    height: 4px;
     width: 100%;
-    height: 3px;
-    background: white;
-    transition: 0.4s ease;
+    background: #FFF;
+    border-radius: 2px;
+    transition: 0.3s ease, background 0.3s ease;
 }
 
-.hamburger span:nth-child(1) { top: 0; }
-.hamburger span:nth-child(2) { top: 10px; }
-.hamburger span:nth-child(3) { top: 20px; }
-
-/* When open */
 .menu-open .hamburger span {
-    background: black;
+    background: #111;
 }
 
-.menu-open .hamburger span:nth-child(1) {
-    transform: translateY(10px) rotate(45deg);
+/* Hamburger animation */
+.hamburger.active span:nth-child(1) {
+    transform: translateY(9px) rotate(45deg);
 }
-
-.menu-open .hamburger span:nth-child(2) {
+.hamburger.active span:nth-child(2) {
     opacity: 0;
 }
-
-.menu-open .hamburger span:nth-child(3) {
-    transform: translateY(-10px) rotate(-45deg);
+.hamburger.active span:nth-child(3) {
+    transform: translateY(-9px) rotate(-45deg);
 }
 
-/* Fullscreen Menu */
-.fullscreen-menu {
+/* ============================
+   FULLSCREEN MENU OVERLAY
+============================ */
+
+.menu-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100vh;
     background: white;
-    color: black;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-    opacity: 0;
     pointer-events: none;
-    transition: 0.4s ease;
+    opacity: 0;
     z-index: 9000;
+    transition: opacity 0.3s ease;
 }
 
-.menu-open .fullscreen-menu {
-    opacity: 1;
+.menu-overlay.active {
     pointer-events: auto;
+    opacity: 1;
 }
 
-.fullscreen-menu a {
-    font-size: 2.5rem;
-    margin: 1rem 0;
+.overlay-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.overlay-nav a {
+    font-size: 28px;
     text-decoration: none;
-    color: black;
-    font-weight: 600;
+    color: #111;
+    font-weight: 500;
+    text-align: center;
 }
 
-/* --------------------------------------
-   VIMEO VIDEO FIX (80% WIDTH)
--------------------------------------- */
-.video-container {
-    width: 80%;
-    max-width: 1400px;
-    margin: 140px auto 80px; 
+/* ============================
+   MAIN CONTENT SPACING
+============================ */
+
+main {
+    padding-top: 90px;
+}
+
+/* ============================
+   HERO SECTION
+============================ */
+
+.hero {
+    background: #111;
+    padding: 2rem 0;
+    text-align: center;
+}
+
+.hero-content {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.hero h2 {
+    font-size: 2.5rem;
+}
+
+/* ============================
+   VIDEO WRAPPER (RESPONSIVE)
+============================ */
+
+.video-wrapper {
+    width: 70%;
+    margin: 0 auto;
+    position: relative;
+    padding-top: 56.25%;
+    z-index: 1;
+}
+
+.video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    z-index: 1;
 }
 
 .video-container iframe {
     width: 100%;
-    height: auto;
-    aspect-ratio: 16 / 9;
-    display: block;
+    max-width: 1200px;
+    max-height: 450px;
 }
 
-/* --------------------------------------
-   PORTFOLIO MASONRY GRID
--------------------------------------- */
-.portfolio-grid {
-    column-count: 3;
-    column-gap: 2rem;
-    padding: 2rem;
-    margin-top: 120px;
-}
-
-@media (max-width: 900px) {
-    .portfolio-grid {
-        column-count: 2;
+@media (max-width: 1024px) {
+    .video-wrapper {
+        width: 85%;
     }
 }
 
 @media (max-width: 600px) {
-    .portfolio-grid {
-        column-count: 1;
+    .video-wrapper {
+        width: 95%;
     }
 }
 
-/* Project tile */
+/* ============================
+   IMAGE CONTAINER
+============================ */
+
+.image-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+.image-container img {
+    border-radius: 8px;
+    max-width: 80%;
+    width: 80%;
+}
+
+/* ============================
+   FOOTER
+============================ */
+
+footer {
+    background: #111;
+    color: #fff;
+    text-align: center;
+    padding: 1rem 0;
+}
+
+.social-links a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+/* ============================
+   PORTFOLIO GRID (ASYMMETRIC + ANIMATED)
+============================ */
+
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+    padding: 2rem 1rem;
+}
+
+/* Masonry-like shapes */
 .project-item {
-    display: inline-block;
-    width: 100%;
-    margin: 0 0 2rem;
     position: relative;
     overflow: hidden;
     border-radius: 14px;
-    opacity: 0;
-    animation: fadeUp 1s ease forwards;
+    cursor: pointer;
+    display: block;
+    background: #000;
+    opacity: 0;                   /* Start invisible for animation */
+    transform: translateY(40px);  /* Slide-in motion */
+    animation: fadeUp 0.8s ease forwards;
 }
 
-/* Stagger */
-.project-item:nth-child(1) { animation-delay: 0.1s; }
-.project-item:nth-child(2) { animation-delay: 0.2s; }
-.project-item:nth-child(3) { animation-delay: 0.3s; }
-.project-item:nth-child(4) { animation-delay: 0.4s; }
-.project-item:nth-child(5) { animation-delay: 0.5s; }
-.project-item:nth-child(6) { animation-delay: 0.6s; }
-.project-item:nth-child(7) { animation-delay: 0.7s; }
-.project-item:nth-child(8) { animation-delay: 0.8s; }
+/* Delay each item slightly for cascading effect */
+.project-item:nth-child(1) { animation-delay: .1s; }
+.project-item:nth-child(2) { animation-delay: .2s; }
+.project-item:nth-child(3) { animation-delay: .3s; }
+.project-item:nth-child(4) { animation-delay: .4s; }
+.project-item:nth-child(5) { animation-delay: .5s; }
+.project-item:nth-child(6) { animation-delay: .6s; }
+.project-item:nth-child(7) { animation-delay: .7s; }
+.project-item:nth-child(8) { animation-delay: .8s; }
 
+/* Size modifiers */
+.project-item.tall {
+    grid-row: span 2;
+}
+
+.project-item.wide {
+    grid-column: span 2;
+}
+
+@media (max-width: 900px) {
+    .project-item.wide {
+        grid-column: span 1;
+    }
+    .project-item.tall {
+        grid-row: span 1;
+    }
+}
+
+/* Image */
 .project-item img {
     width: 100%;
-    display: block;
-    transition: transform 0.6s ease, filter 0.6s ease;
-}
-
-.project-item:hover img {
-    transform: scale(1.06) translateY(-4px);
-    filter: brightness(0.85);
+    height: 100%;
+    object-fit: cover;
+    transition: transform .6s ease, filter .6s ease;
 }
 
 /* Overlay */
-.overlay {
+.project-item .overlay {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    padding: 1.2rem;
-    width: 100%;
-    color: white;
-    background: linear-gradient(to top, rgba(0,0,0,0.65), rgba(0,0,0,0));
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
     opacity: 0;
-    transform: translateY(20px);
-    transition: 0.5s ease;
+    transition: opacity .4s ease;
+    padding: 1rem;
+    text-align: center;
+}
+
+.project-item .overlay h2 {
+    margin-bottom: .5rem;
+    font-size: 1.4rem;
+}
+
+.project-item .overlay p {
+    font-size: 1rem;
+}
+
+/* Hover Effects */
+.project-item:hover img {
+    transform: scale(1.08);
+    filter: brightness(.8);
 }
 
 .project-item:hover .overlay {
     opacity: 1;
-    transform: translateY(0);
 }
 
-/* Fade-up animation */
+.project-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,.35);
+}
+
+/* Fade-in animation */
 @keyframes fadeUp {
-    0% { opacity: 0; transform: translateY(40px); }
-    100% { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(40px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 
-/* --------------------------------------
-   FOOTER
--------------------------------------- */
-footer {
-    text-align: center;
-    padding: 40px 0;
-    font-size: 0.9rem;
-    opacity: 0.6;
+/* Mobile hover softening */
+@media (max-width: 768px) {
+    .project-item:hover {
+        transform: translateY(-4px);
+    }
 }
