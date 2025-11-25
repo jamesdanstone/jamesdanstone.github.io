@@ -1,9 +1,10 @@
-// Load header
+// Load header.html into the page
 fetch("header.html")
-    .then(res => res.text())
-    .then(html => {
-        document.getElementById("header").innerHTML = html;
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById("header").innerHTML = data;
 
+        // After header loads, attach hamburger functionality
         const hamburger = document.getElementById("hamburger");
         const menuOverlay = document.getElementById("menuOverlay");
 
