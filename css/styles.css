@@ -35,6 +35,29 @@ body {
     padding: 10px;
 }
 
+/* Default logo color (white) */
+header .logo svg path,
+header .logo svg rect,
+header .logo svg circle,
+header .logo svg line,
+header .logo svg polygon,
+header .logo svg polyline {
+    stroke: white !important;
+    fill: white !important;
+}
+
+/* When menu is open */
+.menu-open header .logo svg path,
+.menu-open header .logo svg rect,
+.menu-open header .logo svg circle,
+.menu-open header .logo svg line,
+.menu-open header .logo svg polygon,
+.menu-open header .logo svg polyline {
+    stroke: black !important;
+    fill: black !important;
+}
+
+
 /* Hamburger */
 .hamburger {
     width: 30px;
