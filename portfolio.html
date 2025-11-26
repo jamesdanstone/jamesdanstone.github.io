@@ -1,36 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio - Your Name</title>
-    <link rel="stylesheet" href="css/styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio — James Stone</title>
+<link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <div id="header"></div>
 
-    <main>
-        <section class="portfolio-grid">
-            <a href="project1.html" class="project-item">
-                <img src="images/project1-thumbnail.png" alt="Project 1 Thumbnail">
-                <div class="overlay">
-                <h2>Project 1 Title</h2>
-                <p>Brief description of Project 1.</p>
-                </div>
-            </a>
-            <a href="project2.html" class="project-item">
-                <img src="images/project2-thumbnail.png" alt="Project 2 Thumbnail">
-                <div class="overlay">
-                <h2>Project 2 Title</h2>
-                <p>Brief description of Project 2.</p>
-                </div>
-            </a>
-            <!-- Add more project items as needed -->
-        </section>
-    </main>
+<div id="header"></div>
 
-    <div id="footer-placeholder"></div>
+<h2 class="gallery-title">Selected Projects</h2>
 
-    <script src="js/script.js"></script>
+<div class="gallery">
+
+<!-- Your existing thumbnails + 6 total -->
+<img src="images/project1-thumbnail.png" data-title="Christmas Market" onclick="location.href='project1.html'">
+<img src="images/project2-thumbnail.png" data-title="Fashion Promo" onclick="location.href='project2.html'">
+<img src="images/project3.png" data-title="Live Event Coverage">
+<img src="images/project4.png" data-title="Brand Film 2024">
+<img src="images/project5.png" data-title="Editorial Short — London">
+<img src="images/project6.png" data-title="Documentary Motion Piece">
+<img src="images/project7.png" data-title="Monochrome Test Film">
+<img src="images/project8.png" data-title="Street Visual Study">
+
+</div>
+
+<!-- Lightbox -->
+<div id="lightbox"><img></div>
+
+<script src="js/script.js"></script>
+<script src="js/gallery.js"></script>
+<div id="footer-placeholder"></div>
 </body>
 </html>
