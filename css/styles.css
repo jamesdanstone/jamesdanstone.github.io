@@ -139,14 +139,28 @@ opacity:.75;
 margin-top:10px;
 }
 
-/* Vimeo background container */
-.vimeo-bg{
+/* Force Vimeo to behave like a real video background */
+.vimeo-bg {
     position:absolute;
-    top:0; left:0;
+    inset:0;
     width:100%;
     height:100%;
     overflow:hidden;
     z-index:-2;
+}
+
+.vimeo-bg iframe {
+    position:absolute;
+    top:50%;
+    left:50%;
+    
+    /* OVERSCALE both ways so it ALWAYS covers */
+    width:180vw;
+    height:180vh;
+
+    transform:translate(-50%, -50%);
+    pointer-events:none;
+    object-fit:cover;
 }
 
 /* Make Vimeo fill the hero section like a real video */
