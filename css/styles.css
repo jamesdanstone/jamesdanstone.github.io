@@ -113,8 +113,8 @@ text-align: center;
 
 /* ============================
 GLOBAL SPACING
-============================ */
-main { padding-top: 90px; }
+============================ 
+main { padding-top: 90px; }*/
 
 /* =========================================================
 HERO SECTION — FULL SCREEN LIKE SIMON TIBBS
@@ -125,6 +125,7 @@ display:flex;
 justify-content:center;
 align-items:center;
 background:#000;
+opacity:0.7;
 text-align:center;
 }
 .hero-fullscreen h1{
