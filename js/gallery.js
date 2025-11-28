@@ -44,14 +44,17 @@ function cell(img){
   title.className="title";
   title.textContent=img.dataset.title||"Untitled";
 
+  // assign click action HERE, inside cell()
+  img.onclick = () => {
+    const page = img.dataset.page;
+    if(page) location.href = page;
+    else openLightbox(img.src);
+  };
+
   box.append(img,title);
   return box;
 }
-  img.onclick = () => {
-  const page = img.dataset.page;
-  if(page) location.href = page;
-  else openLightbox(img.src);
-};
+
 
 /* ----------- PERFECT RESPONSIVE ROW SCALING ----------- */
 function scaleRows(){
