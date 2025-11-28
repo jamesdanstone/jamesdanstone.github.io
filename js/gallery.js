@@ -10,7 +10,7 @@ function buildGallery(){
   while(i<imgs.length){
 
     /* --- Every 3rd row: force 1 item FULL width --- */
-    if(rowCount===2){   // index 0,1,2 → third row
+    if(rowCount===1){   // index 0,1,2 → third row
       makeBanner(imgs[i]);
       i++;
       rowCount = 0;     // reset counter
