@@ -5,20 +5,37 @@ function buildGallery(){
   gallery.innerHTML="";
 
   let i=0;
+  let rowCount=0; // track rows
+
   while(i<imgs.length){
-    if(i===imgs.length-1){ makeBanner(imgs[i]); break; }
 
-    const a=imgs[i], b=imgs[i+1];
-    const rA=a.naturalWidth/a.naturalHeight;
-    const rB=b.naturalWidth/b.naturalHeight;
-
-    if(rA>2.5 || rB>2.5){
-      makeBanner(imgs[i]); i++; continue;
+    /* --- Every 3rd row: force 1 item FULL width --- */
+    if(rowCount===2){   // index 0,1,2 → third row
+      makeBanner(imgs[i]);
+      i++;
+      rowCount = 0;     // reset counter
+      continue;
     }
 
-    makeRow(a,b); i+=2;
+    /* Last image or banner detection */
+    if(i===imgs.length-1 || isBanner(imgs[i])){
+      makeBanner(imgs[i]);
+      i++;
+      rowCount = 0;
+      continue;
+    }
+
+    /* Build normal 2-img row */
+    makeRow(imgs[i], imgs[i+1]);
+    i+=2;
+    rowCount++;
   }
   scaleRows();
+}
+
+/* ----------------- Helpers ----------------- */
+function isBanner(img){
+  return (img.naturalWidth/img.naturalHeight) > 2.5;
 }
 
 /* -------------- STRUCTURE COMPONENTS ---------------- */
@@ -31,7 +48,7 @@ function makeRow(a,b){
 
 function makeBanner(img){
   const full=document.createElement("div");
-  full.className="full";
+  full.className="full";          // single row container
   full.append(cell(img));
   document.querySelector(".gallery").append(full);
 }
@@ -44,7 +61,6 @@ function cell(img){
   title.className="title";
   title.textContent=img.dataset.title||"Untitled";
 
-  // assign click action HERE, inside cell()
   img.onclick = () => {
     const page = img.dataset.page;
     if(page) location.href = page;
@@ -63,7 +79,7 @@ function scaleRows(){
     const r=imgs.map(i=>i.naturalWidth/i.naturalHeight);
     const sum=r[0]+r[1];
 
-    const usable=row.clientWidth-10; // gutter accounted
+    const usable=row.clientWidth-10;
     const H=usable/sum;
 
     [...row.children].forEach((c,i)=>{
@@ -79,7 +95,6 @@ function openLightbox(src){
   lb.querySelector("img").src=src;
   lb.style.display="flex";
 }
-
 document.getElementById("lightbox").onclick=e=>{
   if(e.target.id==="lightbox") e.target.style.display="none";
 };
