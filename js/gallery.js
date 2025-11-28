@@ -44,7 +44,11 @@ function cell(img){
   title.className="title";
   title.textContent=img.dataset.title||"Untitled";
 
-  img.onclick=()=>openLightbox(img.src);
+  img.onclick = () => {
+  const page = img.dataset.page;
+  if(page) location.href = page;
+  else openLightbox(img.src);
+};
   box.append(img,title);
   return box;
 }
