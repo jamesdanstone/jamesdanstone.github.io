@@ -332,6 +332,84 @@ img.loaded { opacity:1; }
   max-height:90vh;
   object-fit:contain;
 }
+
+/* =======================
+PROJECT PAGE MODULES
+======================= */
+
+/* Base wrapper */
+.project-wrapper{
+    width:90%;
+    max-width:1200px;
+    margin:auto;
+    padding-top:90px;
+}
+
+/* Hero Section */
+.project-hero{
+    width:100%;
+    margin-bottom:5rem;
+}
+.project-hero img,
+.project-hero .hero-video iframe{
+    width:100%;
+    height:auto;
+    border-radius:4px;
+}
+
+/* Text Blocks */
+.project-text{
+    max-width:800px;
+    margin:3rem auto;
+    font-size:1.2rem;
+    line-height:1.9;
+}
+.project-text h1{
+    font-size:3rem;
+    margin-bottom:1rem;
+}
+
+/* Media Fill */
+.project-media{
+    margin:4rem auto;
+    width:100%;
+}
+.project-media iframe,
+.project-media img{
+    width:100%;
+    border-radius:6px;
+    max-height:650px;
+    object-fit:cover;
+}
+
+/* Split Layout */
+.project-split{
+    width:100%;
+    margin:6rem 0;
+    display:flex;
+    gap:3rem;
+    align-items:center;
+    flex-wrap:wrap;
+}
+.split-media img,
+.split-media iframe{
+    width:100%;
+    border-radius:8px;
+}
+.split-text{ flex:1; }
+
+/* Gallery */
+.project-gallery{
+    display:grid;
+    gap:20px;
+    margin:6rem 0;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+}
+.project-gallery img{
+    width:100%;
+    border-radius:8px;
+}
+
 /* =========================================================
 FOOTER
 ========================================================= */
