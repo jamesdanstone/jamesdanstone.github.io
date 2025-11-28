@@ -221,7 +221,8 @@ line-height:1.9;
 font-size:2.4rem;
 margin-bottom:20px;
 }
-
+.about-img-full{
+width:100%;
 /* =========================================================
 VIDEO (used elsewhere – kept from original)
 ========================================================= */
