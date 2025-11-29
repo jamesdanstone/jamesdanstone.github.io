@@ -1,70 +1,123 @@
 /* ---------------- BUILD & GROUP GALLERY ---------------- */
 function buildGallery(){
-  const gallery=document.querySelector(".gallery");
-  const imgs=[...gallery.querySelectorAll("img")];
-  gallery.innerHTML="";
+    const gallery = document.querySelector(".gallery");
+    const imgs = [...gallery.querySelectorAll("img")];
+    gallery.innerHTML = "";
 
-  let i=0;
-  let rowCount=0;
+    let i=0, rowCount=0;
 
-  while(i<imgs.length){
+    while(i<imgs.length){
 
-    /* Every 3rd row → Banner */
-    if(rowCount===1){
-      makeBanner(imgs[i]);
-      i++;
-      rowCount=0;
-      continue;
+        if(rowCount===1){
+            makeBanner(imgs[i]); i++; rowCount=0; continue;
+        }
+
+        if(i===imgs.length-1 || isBanner(imgs[i])){
+            makeBanner(imgs[i]); i++; rowCount=0; continue;
+        }
+
+        makeRow(imgs[i],imgs[i+1]);
+        i+=2; rowCount++;
     }
 
-    /* Last item OR natural banner */
-    if(i===imgs.length-1 || isBanner(imgs[i])){
-      makeBanner(imgs[i]);
-      i++;
-      rowCount=0;
-      continue;
-    }
-
-    /* Row of two */
-    makeRow(imgs[i],imgs[i+1]);
-    i+=2;
-    rowCount++;
-  }
-
-  scaleRows();
-  staggerReveal();  // ← NEW animation trigger
+    scaleRows();
 }
 
-/* ----------------- Helpers ----------------- */
-function isBanner(img){
-  return (img.naturalWidth/img.naturalHeight) > 2.5;
-}
+/* ---------------- HELPERS ---------------- */
+function isBanner(img){ return (img.naturalWidth/img.naturalHeight)>2.5; }
 
-/* -------------- STRUCTURE COMPONENTS ---------------- */
 function makeRow(a,b){
-  const row=document.createElement("div");
-  row.className="row gallery-item";
-  row.append(cell(a),cell(b));
-  document.querySelector(".gallery").append(row);
+    const row=document.createElement("div");
+    row.className="row gallery-item";
+    row.append(cell(a), cell(b));
+    document.querySelector(".gallery").append(row);
 }
 
 function makeBanner(img){
-  const full=document.createElement("div");
-  full.className="full gallery-item";
-  full.append(cell(img));
-  document.querySelector(".gallery").append(full);
+    const full=document.createElement("div");
+    full.className="full gallery-item";
+    full.append(cell(img));
+    document.querySelector(".gallery").append(full);
 }
 
 function cell(img){
-  const box=document.createElement("div");
-  box.className="cell";
+    const box=document.createElement("div");
+    box.className="cell";
 
-  const title=document.createElement("div");
-  title.className="title";
-  title.textContent=img.dataset.title||"Untitled";
+    const title=document.createElement("div");
+    title.className="title";
+    title.textContent=img.dataset.title || "Untitled";
 
-  img.onclick=()=>{
-    const page=img.dataset.page;
+    img.onclick = ()=> img.dataset.page ? location.href=img.dataset.page : openLightbox(img.src);
+
+    box.append(img,title);
+    return box;
+}
+
+/* ------------- SCALING ------------------ */
+function scaleRows(){
+    document.querySelectorAll(".row").forEach(row=>{
+        const imgs=[...row.querySelectorAll("img")];
+        const r=imgs.map(i=>i.naturalWidth/i.naturalHeight);
+        const usable=row.clientWidth-10;
+        const H=usable/(r[0]+r[1]);
+
+        [...row.children].forEach((c,i)=>{
+            c.style.flexBasis=(r[i]/(r[0]+r[1]))*usable+"px";
+            c.style.height=H+"px";
+        });
+    });
+}
+
+/* ---------- LIGHTBOX ---------- */
+function openLightbox(src){
+    const lb=document.getElementById("lightbox");
+    lb.querySelector("img").src = src;
+    lb.style.display="flex";
+}
+document.getElementById("lightbox").onclick=e=>{
+    if(e.target.id==="lightbox") e.target.style.display="none";
+};
+
+/* ---------- LAZY LOAD + FADE ---------- */
+function lazyLoad(callback){
+    const thumbs=[...document.querySelectorAll(".gallery img")];
+    let loaded=0;
+
+    thumbs.forEach(img=>{
+        const temp=new Image();
+        temp.src=img.src;
+        temp.onload=()=>{
+            img.classList.add("loaded");
+            loaded++;
+
+            if(loaded === thumbs.length) callback();  // All loaded -> reveal
+        };
+    });
+}
+
+/* ---------- STAGGER ANIMATION ---------- */
+function revealGallery(){
+    const gallery=document.querySelector(".gallery");
+    const items=document.querySelectorAll(".gallery-item");
+
+    gallery.classList.add("loaded");
+
+    items.forEach((el,i)=>{
+        setTimeout(()=>{
+            el.style.opacity=1;
+            el.style.transform="translateY(0)";
+            el.style.transition="opacity .6s, transform .6s";
+        }, i*120);
+    });
+}
+
+/* ---------- INIT ---------- */
+window.onload=()=>{
+    buildGallery();
+    lazyLoad(()=>{ revealGallery(); });
+    window.addEventListener("resize", scaleRows);
+};    const page=img.dataset.page;
     if(page) location.href=page;
     else openLightbox(img.src);
   };
