@@ -323,15 +323,20 @@ img.loaded { opacity:1; }
 PORTFOLIO GALLERY LOADING STATE
 ============================= */
 
-/* Hide gallery until JS finishes building */
+/* Hide gallery until build complete */
 .gallery {
     opacity: 0;
-    transition: opacity .6s ease;
 }
 
-/* JS adds this when layout is ready */
 .gallery.loaded {
     opacity: 1;
+    transition: opacity .8s ease;
+}
+
+/* Items need hidden state for stagger animation */
+.gallery-item {
+    opacity: 0;
+    transform: translateY(20px);
 }
 /* =========================================================
 PROJECT PAGE MODULES
