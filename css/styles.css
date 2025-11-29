@@ -669,26 +669,6 @@ img.loaded { opacity:1; }
   max-height:90vh;
   object-fit:contain;
 }
-
-/* ============================
-PORTFOLIO GALLERY LOADING STATE
-============================= */
-
-/* Hide gallery until build complete */
-.gallery {
-    opacity: 0;
-}
-
-.gallery.loaded {
-    opacity: 1;
-    transition: opacity .8s ease;
-}
-
-/* Items need hidden state for stagger animation */
-.gallery-item {
-    opacity: 0;
-    transform: translateY(20px);
-}
 /* =========================================================
 PROJECT PAGE MODULES
 ========================================================= */
