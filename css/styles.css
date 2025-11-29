@@ -370,6 +370,7 @@ UPDATED PROJECT MEDIA (NO CONFLICT)
     outline: none;
     box-shadow: none;
 }
+
 .project-media img { object-fit: cover; }
 .project-media iframe { object-fit: contain !important; }
 .project-media + .project-media { margin-top: 6rem; }
