@@ -369,7 +369,6 @@ UPDATED PROJECT MEDIA (NO CONFLICT)
     border-radius: 0;
     outline: none;
     box-shadow: none;
-    max-height: 650px;
 }
 .project-media img { object-fit: cover; }
 .project-media iframe { object-fit: contain !important; }
