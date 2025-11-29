@@ -109,8 +109,22 @@ function lazyLoad(){
 }
 
 /* ---------------- INIT ---------------- */
-window.onload=()=>{
+window.onload = () => {
+
   buildGallery();
   lazyLoad();
-  window.addEventListener("resize",scaleRows);
+  scaleRows();
+
+  // Fade in gallery once images load
+  const gallery = document.querySelector(".gallery");
+  gallery.classList.add("loaded");
+
+  // Stagger animation — sequenced
+  let delay = 100;
+  document.querySelectorAll(".row, .full").forEach(el => {
+      setTimeout(() => el.classList.add("visible"), delay);
+      delay += 120; // spacing between items
+  });
+
+  window.addEventListener("resize", scaleRows);
 };
