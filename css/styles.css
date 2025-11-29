@@ -143,7 +143,7 @@ margin-top:10px;
 /* FULLSCREEN HERO */
 .video-hero{
     position:relative;
-    height:100vh; /* ensures full screen height */
+    height:100vh;
     overflow:hidden;
 }
 
@@ -162,7 +162,7 @@ margin-top:10px;
     position:absolute;
     top:50%;
     left:50%;
-    width:177.78vh; /* (100vh * 16/9) to guarantee cover */
+    width:177.78vh;
     height:100vh;
     transform:translate(-50%, -50%);
     min-width:100vw;
@@ -221,11 +221,10 @@ line-height:1.9;
 font-size:2.4rem;
 margin-bottom:20px;
 }
-.about-img-full{
-width:100%;
-}
+.about-img-full{ width:100%; }
+
 /* =========================================================
-VIDEO (used elsewhere – kept from original)
+VIDEO (GLOBAL)
 ========================================================= */
 .video-wrapper {
 width: 70%;
@@ -249,12 +248,11 @@ max-width: 1200px;
 max-height: 450px;
 }
 
-/* Width responsiveness */
 @media (max-width:1024px){ .video-wrapper{width:85%;} }
 @media (max-width:600px){ .video-wrapper{width:95%;} }
 
 /* =========================================================
-PORTFOLIO GALLERY — ADVANCED AUTO GROUPING + LIGHTBOX
+PORTFOLIO GALLERY
 ========================================================= */
 
 .gallery {
@@ -264,16 +262,12 @@ PORTFOLIO GALLERY — ADVANCED AUTO GROUPING + LIGHTBOX
   padding:10px;
   padding-top:70px;
 }
-
-/* Rows + full-width banners */
 .row,
 .full {
   display:flex;
   gap:10px;
-  margin-bottom:10px; /* matches gutter exactly */
+  margin-bottom:10px;
 }
-
-/* Base image cell wrapper */
 .cell {
   position:relative;
   background:#111;
@@ -282,8 +276,6 @@ PORTFOLIO GALLERY — ADVANCED AUTO GROUPING + LIGHTBOX
   align-items:center;
   justify-content:center;
 }
-
-/* Images: no crop, no stretch */
 .cell img,
 .full img {
   width:100%;
@@ -294,10 +286,7 @@ PORTFOLIO GALLERY — ADVANCED AUTO GROUPING + LIGHTBOX
   cursor:pointer;
   display:block;
 }
-
 img.loaded { opacity:1; }
-
-/* Title hover overlay */
 .title {
   position:absolute;
   bottom:0;
@@ -311,33 +300,29 @@ img.loaded { opacity:1; }
   transition:all .4s ease;
   pointer-events:none;
 }
-
 .cell:hover .title {
   opacity:1;
   transform:translateY(0);
 }
-
-/* Fullscreen Lightbox */
 #lightbox {
-  position:fixed; inset:0;
+  position:fixed;
+  inset:0;
   background:rgba(0,0,0,.9);
   display:none;
   align-items:center;
   justify-content:center;
   z-index:9999;
 }
-
 #lightbox img {
   max-width:95vw;
   max-height:90vh;
   object-fit:contain;
 }
 
-/* =======================
+/* =========================================================
 PROJECT PAGE MODULES
-======================= */
+========================================================= */
 
-/* Base wrapper */
 .project-wrapper{
     width:90%;
     max-width:1200px;
@@ -345,11 +330,8 @@ PROJECT PAGE MODULES
     padding-top:90px;
 }
 
-/* Hero Section */
-.project-hero{
-    width:100%;
-    margin-bottom:5rem;
-}
+/* Hero */
+.project-hero{ width:100%; margin-bottom:5rem; }
 .project-hero img,
 .project-hero .hero-video iframe{
     width:100%;
@@ -369,18 +351,29 @@ PROJECT PAGE MODULES
     margin-bottom:1rem;
 }
 
-/* Media Fill */
-.project-media{
-    margin:4rem auto;
-    width:100%;
+/* ============================
+UPDATED PROJECT MEDIA (NO CONFLICT)
+============================= */
+.project-media {
+    width: 100%;
+    margin: 4rem 0;
+    padding: 0;
+    border: none;
+    background: none;
 }
-.project-media iframe,
-.project-media img{
-    width:100%;
-    border-radius:6px;
-    max-height:650px;
-    object-fit:cover;
+.project-media img,
+.project-media iframe {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 0;
+    outline: none;
+    box-shadow: none;
+    max-height: 650px;
 }
+.project-media img { object-fit: cover; }
+.project-media iframe { object-fit: contain !important; }
+.project-media + .project-media { margin-top: 6rem; }
 
 /* Split Layout */
 .project-split{
