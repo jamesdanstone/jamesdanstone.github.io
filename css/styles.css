@@ -319,6 +319,20 @@ img.loaded { opacity:1; }
   object-fit:contain;
 }
 
+/* ============================
+PORTFOLIO GALLERY LOADING STATE
+============================= */
+
+/* Hide gallery until JS finishes building */
+.gallery {
+    opacity: 0;
+    transition: opacity .6s ease;
+}
+
+/* JS adds this when layout is ready */
+.gallery.loaded {
+    opacity: 1;
+}
 /* =========================================================
 PROJECT PAGE MODULES
 ========================================================= */
