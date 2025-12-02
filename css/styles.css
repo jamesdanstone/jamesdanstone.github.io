@@ -171,6 +171,107 @@ margin-top:10px;
     object-fit:cover;
 }
 
+/* =========================================================
+HERO — OVERLAY TEXT + BUTTONS (ADDED)
+========================================================= */
+
+/* Overlay container */
+.hero-content {
+    position: absolute;
+    z-index: 5;
+    width: 100%;
+    text-align: center;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0 20px;
+    pointer-events: none; /* allows scroll on mobile */
+}
+
+.hero-title {
+    font-size: clamp(2rem, 6vw, 6rem);
+    font-weight: 600;
+    letter-spacing: -1px;
+}
+
+.hero-sub {
+    font-size: clamp(1rem, 2vw, 2rem);
+    margin-top: .5rem;
+    opacity: .9;
+}
+
+/* Buttons area */
+.hero-buttons {
+    margin-top: 2.5rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    pointer-events: auto; /* re-enable button interaction */
+}
+
+/* Pill button style */
+.btn-hero {
+    background: transparent;
+    border: 2px solid #fff;
+    padding: .75rem 2.25rem;
+    border-radius: 999px;
+    font-size: 1rem;
+    color: #fff;
+    cursor: pointer;
+    letter-spacing: .5px;
+    transition: .3s ease;
+}
+
+.btn-hero:hover {
+    background: rgba(255,255,255,0.12);
+}
+
+
+/* =========================================================
+HERO — FULL WIDTH VIMEO BACKGROUND (IMPROVED)
+========================================================= */
+
+.video-hero {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.vimeo-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    overflow: hidden;
+}
+
+/* Full screen scaling for any aspect ratio */
+.vimeo-bg iframe {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    /* Cover screen mathematically */
+    width: 100vw;
+    height: 56.25vw;         /* 16:9 ratio */
+    min-width: 177.78vh;     /* Prevent black bars on ultrawide */
+    min-height: 100vh;
+
+    transform: translate(-50%, -50%);
+    object-fit: cover !important;
+
+    pointer-events: none;
+    border: none;
+}
+
+/* Dark overlay for readability */
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    z-index: -1;
+}
+
 /* INTRO SECTION */
 .intro{
 padding:5rem 0;
