@@ -182,17 +182,21 @@ HERO — FULL SCREEN BACKGROUND VIDEO (CLEAN)
 }
 
 .hero-title {
-  font-size: clamp(2rem, 6vw, 6rem);
+  font-family: "Bluu Next", serif;
+  font-size: clamp(4rem, 9vw, 14rem);
   font-weight: 600;
   letter-spacing: -1px;
   color: #fff;
+  line-height: 0.85;
 }
 
 .hero-sub {
+  font-family: "Bluu Next", serif;
   font-size: clamp(1rem, 2vw, 2rem);
-  margin-top: .5rem;
+  margin-top: 0.5em;  /* consistent spacing */
   color: #fff;
 }
+
 
 .hero-buttons {
   margin-top: 2.5rem;
