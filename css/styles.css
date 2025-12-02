@@ -269,7 +269,7 @@ HERO — FULL WIDTH VIMEO BACKGROUND (IMPROVED)
     position: absolute;
     inset: 0;
     pointer-events: none;
-    z-index: -3;
+    z-index: -1;
     background:
         linear-gradient(
             to bottom,
