@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
   fetch("footer.html")
     .then(response => response.text())
     .then(data => {
-      document.getElementById("footer-placeholder").innerHTML = data;
+      document.getElementById("footer").innerHTML = data;
 
       // =======================================
       // SET YEAR (dynamic copyright year)
