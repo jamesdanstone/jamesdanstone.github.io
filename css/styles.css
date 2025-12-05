@@ -454,6 +454,19 @@ PROJECT PAGE
   object-fit: contain;
 }
 
+/* Portrait video (9:16 like 1080×1920)
+   Make it tall on desktops */
+@media (min-width: 900px) {
+  .project-media iframe[width="1080"][height="1920"] {
+    height: 90vh !important;
+    width: auto !important;
+    aspect-ratio: 9 / 16;
+    display: block;
+    margin: 0 auto;
+    object-fit: contain;
+  }
+}
+
 /* ============================
 FOOTER
 ============================ */
