@@ -230,6 +230,10 @@ INTRO SECTION
   opacity: .9;
 }
 
+a.index-contact:link { color: #0098f8; }
+a.index-contact:hover { color: #05f1ff; }
+a.index-contact:active { color: #FFFFFF; }
+
 /* =========================================================
 SHOWREEL
 ========================================================= */
