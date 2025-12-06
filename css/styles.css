@@ -280,7 +280,7 @@ ABOUT PAGE
 .about-wrapper {
   display: flex;
   gap: 3rem;
-  padding: 6rem 0;
+  padding: 120px 0;
   align-items: center;
   flex-wrap: wrap;
 }
