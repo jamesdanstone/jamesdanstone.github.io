@@ -39,7 +39,7 @@ h1 {
 HEADER + HAMBURGER
 ============================ */
 .site-header {
-  height: 70px;
+  height: 130px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -52,7 +52,7 @@ HEADER + HAMBURGER
   z-index: 9400;
 }
 .logo-svg {
-  height: 70px;
+  height: 100px;
   padding: 10px;
   width: auto;
   color: white;
