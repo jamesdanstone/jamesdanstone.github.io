@@ -300,6 +300,15 @@ ABOUT PAGE
   margin-bottom: 20px;
 }
 
+.about-image-break {
+  max-height: 65vh;
+  overflow: hidden;
+}
+
+.about-image-break img {
+  height: 100%;
+}
+
 a.about-contact:link { color: #0098f8; }
 a.about-contact:hover { color: #05f1ff; }
 a.about-contact:active { color: #FFFFFF; }
