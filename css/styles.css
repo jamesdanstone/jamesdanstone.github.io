@@ -283,7 +283,14 @@ ABOUT PAGE
   margin: auto;
   padding-top: 120px;
 }
-.about-intro {
+.about-split {
+  display: flex;
+  gap: 3rem;
+  padding: 5rem 0;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.about-single {
   display: flex;
   gap: 3rem;
   padding: 5rem 0;
