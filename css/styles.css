@@ -319,7 +319,8 @@ ABOUT PAGE
 }
 
 .about-image-break img {
-  height: 100%;
+  width: 100%;
+  border-radius: 4px;
 }
 
 a.about-contact:link { color: #0098f8; }
