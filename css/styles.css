@@ -314,6 +314,7 @@ ABOUT PAGE
 }
 
 .about-image-break {
+  display: flex;
   overflow: hidden;
 }
 
