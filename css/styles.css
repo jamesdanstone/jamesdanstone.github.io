@@ -278,9 +278,15 @@ SHOWREEL
 ABOUT PAGE
 ========================================================= */
 .about-wrapper {
+  width: 90%;
+  max-width: 1200px;
+  margin: auto;
+  padding-top: 120px;
+}
+.about-intro {
   display: flex;
   gap: 3rem;
-  padding: 120px 0;
+  padding: 5rem 0;
   align-items: center;
   flex-wrap: wrap;
 }
