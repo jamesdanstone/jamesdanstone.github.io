@@ -300,6 +300,10 @@ ABOUT PAGE
   margin-bottom: 20px;
 }
 
+a.about-contact:link { color: #0098f8; }
+a.about-contact:hover { color: #05f1ff; }
+a.about-contact:active { color: #FFFFFF; }
+
 /* =========================================================
 VIDEO (GLOBAL)
 ========================================================= */
