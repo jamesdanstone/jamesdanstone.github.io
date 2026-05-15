@@ -1,0 +1,230 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Full WebM Experience Test</title><style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000;font-family:system-ui,sans-serif}
+#container{width:100vw;height:100vh;position:fixed;inset:0;background:#000}
+#intro{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;background:rgba(0,0,0,.86);color:#fff;text-align:center;padding:24px}
+.panel{max-width:500px}h1{margin:0 0 10px;font-size:24px}p{line-height:1.45;opacity:.9}
+button{padding:13px 20px;border:0;border-radius:999px;font-weight:700;font-size:16px}
+#status{position:fixed;left:12px;right:12px;top:12px;z-index:999;color:#fff;background:rgba(0,0,0,.72);border-radius:12px;padding:10px;font-size:14px;line-height:1.35;white-space:pre-wrap;display:none}
+#replay,#back{position:fixed;right:12px;bottom:12px;z-index:999;display:none}
+#back{left:12px;right:auto;display:block}a{color:#9cf}
+</style><script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/",
+    "mindar-image-three": "https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-three.prod.js"
+  }
+}
+</script></head><body>
+<div id="container"></div><a id="back" href="index.html"><button>Back</button></a>
+<div id="intro"><div class="panel"><h1>Full WebM Experience Test</h1><p>This is the complete flat-poster experience: poster overlay first, then WebM animation after recognition.</p><button id="start">Start Test</button></div></div>
+<div id="status">Loading…</div><button id="replay">Replay</button>
+<script type="module">
+import * as THREE from 'three';
+const CONFIG = {
+  targetSrc: './targets.mind',
+  posterImage: './assets/poster-opening-frame_v01.png',
+  videoSrc: './assets/animation_v01.webm',
+
+  // Real tracked poster size in AR units.
+  posterWidth: 1,
+  posterHeight: 1.414,
+
+  /*
+    VIDEO OVERSCAN SETTINGS
+
+    Use these when your WebM canvas is larger than the actual poster area.
+
+    Example:
+    - Your WebM canvas is 1920 x 2700
+    - The central poster artwork inside the WebM is 1440 x 2036
+    - The poster artwork is centred in the WebM
+
+    Then set:
+    videoCanvasWidth: 1920,
+    videoCanvasHeight: 2700,
+    videoPosterWidth: 1440,
+    videoPosterHeight: 2036,
+    videoPosterCenterX: 0.5,
+    videoPosterCenterY: 0.5
+
+    The video plane will become larger than the target, while the
+    central poster-area of the video aligns to the physical target.
+  */
+  videoCanvasWidth: 1440,
+  videoCanvasHeight: 2160,
+  videoPosterWidth: 720,
+  videoPosterHeight: 1080,
+  videoPosterCenterX: 0.5,
+  videoPosterCenterY: 0.5
+};
+
+function getVideoPlaneTransform() {
+  const width = CONFIG.posterWidth * (CONFIG.videoCanvasWidth / CONFIG.videoPosterWidth);
+  const height = CONFIG.posterHeight * (CONFIG.videoCanvasHeight / CONFIG.videoPosterHeight);
+
+  // Convert the poster area centre inside the video canvas into a local plane offset.
+  // X normalised left->right, Y normalised top->bottom.
+  const x = -(CONFIG.videoPosterCenterX - 0.5) * width;
+  const y = (CONFIG.videoPosterCenterY - 0.5) * height;
+
+  return { width, height, x, y };
+}
+
+function showStatus(message) {
+  const status = document.getElementById('status');
+  status.textContent = message;
+  status.style.display = 'block';
+}
+
+function errorToString(err) {
+  try {
+    return JSON.stringify({
+      name: err?.name,
+      message: err?.message,
+      stack: err?.stack,
+      string: String(err),
+      keys: err && typeof err === 'object' ? Object.keys(err) : []
+    }, null, 2);
+  } catch (e) {
+    return String(err);
+  }
+}
+
+async function checkFiles(requireVideo = false) {
+  const checks = [CONFIG.targetSrc, CONFIG.posterImage];
+  if (requireVideo) checks.push(CONFIG.videoSrc);
+
+  for (const url of checks) {
+    const res = await fetch(url, { cache: 'no-store' });
+    const blob = await res.blob();
+    if (!res.ok) throw new Error(`Missing/unreachable: ${url} (${res.status})`);
+    if (url.endsWith('.mind') && blob.size < 100) throw new Error('targets.mind looks empty/invalid.');
+    console.log(url, blob.size);
+  }
+}
+
+async function createMindAR() {
+  const { MindARThree } = await import('mindar-image-three');
+  return new MindARThree({
+    container: document.getElementById('container'),
+    imageTargetSrc: CONFIG.targetSrc,
+    maxTrack: 1
+  });
+}
+
+function makeVideoElement(src) {
+  const video = document.createElement('video');
+  video.src = src;
+  video.crossOrigin = 'anonymous';
+  video.playsInline = true;
+  video.setAttribute('playsinline', '');
+  video.setAttribute('webkit-playsinline', '');
+  video.muted = true;
+  video.loop = false;
+  video.preload = 'auto';
+  video.style.display = 'none';
+  document.body.appendChild(video);
+  return video;
+}
+
+async function primeVideo(video) {
+  await video.play();
+  video.pause();
+  video.currentTime = 0;
+}
+
+window.addEventListener('error', e => showStatus('Runtime error:\n' + e.message));
+window.addEventListener('unhandledrejection', e => showStatus('Promise error:\n' + errorToString(e.reason)));
+
+const start = document.getElementById('start');
+const intro = document.getElementById('intro');
+const replay = document.getElementById('replay');
+let posterMesh, videoMesh, video;
+
+function loadTexture(url) {
+  return new Promise((resolve, reject) => {
+    new THREE.TextureLoader().load(url, texture => {
+      texture.colorSpace = THREE.SRGBColorSpace;
+      resolve(texture);
+    }, undefined, () => reject(new Error('Texture failed: ' + url)));
+  });
+}
+
+function playExperience() {
+  posterMesh.visible = false;
+  videoMesh.visible = true;
+  replay.style.display = 'block';
+  video.currentTime = 0;
+  video.play()
+    .then(() => showStatus('TARGET FOUND — full WebM experience playing.'))
+    .catch(err => showStatus('Video play failed:\n' + errorToString(err)));
+}
+
+start.addEventListener('click', async () => {
+  try {
+    intro.style.display = 'none';
+    showStatus('Checking files…');
+    await checkFiles(true);
+
+    showStatus('Preparing WebM video…');
+    video = makeVideoElement(CONFIG.videoSrc);
+    await primeVideo(video);
+
+    const videoTexture = new THREE.VideoTexture(video);
+    videoTexture.colorSpace = THREE.SRGBColorSpace;
+    videoTexture.needsUpdate = true;
+
+    const mindarThree = await createMindAR();
+    const { renderer, scene, camera } = mindarThree;
+    const anchor = mindarThree.addAnchor(0);
+
+    const posterTexture = await loadTexture(CONFIG.posterImage);
+    posterMesh = new THREE.Mesh(
+      new THREE.PlaneGeometry(CONFIG.posterWidth, CONFIG.posterHeight),
+      new THREE.MeshBasicMaterial({ map: posterTexture, transparent: true, alphaTest: 0.01, side: THREE.DoubleSide })
+    );
+    anchor.group.add(posterMesh);
+
+    const videoTransform = getVideoPlaneTransform();
+    videoMesh = new THREE.Mesh(
+      new THREE.PlaneGeometry(videoTransform.width, videoTransform.height),
+      new THREE.MeshBasicMaterial({
+        map: videoTexture,
+        transparent: true,
+        opacity: 1,
+        alphaTest: 0.001,
+        depthWrite: false,
+        depthTest: true,
+        blending: THREE.NormalBlending,
+        side: THREE.DoubleSide,
+        toneMapped: false
+      })
+    );
+    videoMesh.position.set(videoTransform.x, videoTransform.y, 0.01);
+    videoMesh.position.set(videoTransform.x, videoTransform.y, videoMesh.position.z || 0.01);
+    videoMesh.visible = false;
+    anchor.group.add(videoMesh);
+
+    video.addEventListener('ended', () => showStatus('Full WebM experience finished.'));
+    anchor.onTargetFound = () => playExperience();
+    anchor.onTargetLost = () => showStatus('Target lost.');
+
+    showStatus('Starting camera…');
+    await mindarThree.start();
+    showStatus('Camera started. Point at the poster target.');
+    renderer.setAnimationLoop(() => renderer.render(scene, camera));
+  } catch (err) {
+    console.error(err);
+    showStatus('Full WebM experience failed:\n' + errorToString(err));
+    intro.style.display = 'grid';
+  }
+});
+
+replay.addEventListener('click', () => {
+  posterMesh.visible = true;
+  videoMesh.visible = false;
+  playExperience();
+});
+</script></body></html>
