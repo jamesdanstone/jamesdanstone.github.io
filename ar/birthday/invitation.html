@@ -1,0 +1,276 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Arthur is turning three!</title>
+
+<style>
+html,body{
+  margin:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  background:#000;
+  font-family:system-ui,sans-serif;
+}
+#container{
+  width:100vw;
+  height:100vh;
+  position:fixed;
+  inset:0;
+  background:#000;
+}
+#status{
+  display:none;
+}
+</style>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/",
+    "mindar-image-three": "https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-three.prod.js"
+  }
+}
+</script>
+</head>
+
+<body>
+<div id="container"></div>
+<div id="status"></div>
+
+<script type="module">
+import * as THREE from 'three';
+
+const CONFIG = {
+  targetSrc: './targets.mind',
+  posterImage: './assets/poster-opening-frame_v01.png',
+  videoSrc: './assets/animation_v01.webm',
+
+  // Real tracked poster size in AR units.
+  posterWidth: 1,
+  posterHeight: 1.414,
+
+  /*
+    VIDEO OVERSCAN SETTINGS
+
+    Use these when your WebM canvas is larger than the actual poster area.
+
+    Example:
+    - Your WebM canvas is 1920 x 2700
+    - The central poster artwork inside the WebM is 1440 x 2036
+    - The poster artwork is centred in the WebM
+
+    Then set:
+    videoCanvasWidth: 1920,
+    videoCanvasHeight: 2700,
+    videoPosterWidth: 1440,
+    videoPosterHeight: 2036,
+    videoPosterCenterX: 0.5,
+    videoPosterCenterY: 0.5
+
+    The video plane will become larger than the target, while the
+    central poster-area of the video aligns to the physical target.
+  */
+  videoCanvasWidth: 1748,
+  videoCanvasHeight: 2480,
+  videoPosterWidth: 1748,
+  videoPosterHeight: 2480,
+  videoPosterCenterX: 0.5,
+  videoPosterCenterY: 0.5
+};
+
+function getVideoPlaneTransform() {
+  const width = CONFIG.posterWidth * (CONFIG.videoCanvasWidth / CONFIG.videoPosterWidth);
+  const height = CONFIG.posterHeight * (CONFIG.videoCanvasHeight / CONFIG.videoPosterHeight);
+  const x = -(CONFIG.videoPosterCenterX - 0.5) * width;
+  const y = (CONFIG.videoPosterCenterY - 0.5) * height;
+  return { width, height, x, y };
+}
+
+function setStatus(message) {
+  const status = document.getElementById('status');
+  status.textContent = message;
+  console.log(message);
+}
+
+function errorToString(err) {
+  try {
+    return JSON.stringify({
+      name: err?.name,
+      message: err?.message,
+      stack: err?.stack,
+      string: String(err),
+      keys: err && typeof err === 'object' ? Object.keys(err) : []
+    }, null, 2);
+  } catch (e) {
+    return String(err);
+  }
+}
+
+async function checkFiles() {
+  const checks = [CONFIG.targetSrc, CONFIG.posterImage, CONFIG.videoSrc];
+
+  for (const url of checks) {
+    const res = await fetch(url, { cache: 'no-store' });
+    const blob = await res.blob();
+
+    if (!res.ok) throw new Error(`Missing/unreachable: ${url} (${res.status})`);
+    if (url.endsWith('.mind') && blob.size < 100) throw new Error('targets.mind looks empty/invalid.');
+
+    console.log(url, blob.size);
+  }
+}
+
+async function createMindAR() {
+  const { MindARThree } = await import('mindar-image-three');
+  return new MindARThree({
+    container: document.getElementById('container'),
+    imageTargetSrc: CONFIG.targetSrc,
+    maxTrack: 1
+  });
+}
+
+function makeVideoElement(src) {
+  const video = document.createElement('video');
+  video.src = src;
+  video.crossOrigin = 'anonymous';
+  video.playsInline = true;
+  video.setAttribute('playsinline', '');
+  video.setAttribute('webkit-playsinline', '');
+  video.muted = true;
+  video.defaultMuted = true;
+  video.loop = true;
+  video.preload = 'auto';
+  video.autoplay = true;
+  video.style.display = 'none';
+  document.body.appendChild(video);
+  return video;
+}
+
+function loadTexture(url) {
+  return new Promise((resolve, reject) => {
+    new THREE.TextureLoader().load(
+      url,
+      texture => {
+        texture.colorSpace = THREE.SRGBColorSpace;
+        resolve(texture);
+      },
+      undefined,
+      () => reject(new Error('Texture failed: ' + url))
+    );
+  });
+}
+
+let posterMesh;
+let videoMesh;
+let video;
+let hasStartedOnce = false;
+
+async function playExperience() {
+  if (!video || !videoMesh || !posterMesh) return;
+
+  posterMesh.visible = false;
+  videoMesh.visible = true;
+
+  if (!hasStartedOnce) {
+    video.currentTime = 0;
+    hasStartedOnce = true;
+  }
+
+  try {
+    await video.play();
+    setStatus('Target found — looping video.');
+  } catch (err) {
+    console.warn('Video play failed:', err);
+    setStatus('Video play failed: ' + errorToString(err));
+  }
+}
+
+async function initialise() {
+  try {
+    setStatus('Checking files…');
+    await checkFiles();
+
+    setStatus('Preparing video…');
+    video = makeVideoElement(CONFIG.videoSrc);
+
+    const videoTexture = new THREE.VideoTexture(video);
+    videoTexture.colorSpace = THREE.SRGBColorSpace;
+    videoTexture.needsUpdate = true;
+
+    setStatus('Initialising AR…');
+    const mindarThree = await createMindAR();
+    const { renderer, scene, camera } = mindarThree;
+    const anchor = mindarThree.addAnchor(0);
+
+    const posterTexture = await loadTexture(CONFIG.posterImage);
+    posterMesh = new THREE.Mesh(
+      new THREE.PlaneGeometry(CONFIG.posterWidth, CONFIG.posterHeight),
+      new THREE.MeshBasicMaterial({
+        map: posterTexture,
+        transparent: true,
+        alphaTest: 0.01,
+        side: THREE.DoubleSide
+      })
+    );
+    anchor.group.add(posterMesh);
+
+    const videoTransform = getVideoPlaneTransform();
+    videoMesh = new THREE.Mesh(
+      new THREE.PlaneGeometry(videoTransform.width, videoTransform.height),
+      new THREE.MeshBasicMaterial({
+        map: videoTexture,
+        transparent: true,
+        opacity: 1,
+        alphaTest: 0.001,
+        depthWrite: false,
+        depthTest: true,
+        blending: THREE.NormalBlending,
+        side: THREE.DoubleSide,
+        toneMapped: false
+      })
+    );
+    videoMesh.position.set(videoTransform.x, videoTransform.y, 0.01);
+    videoMesh.visible = false;
+    anchor.group.add(videoMesh);
+
+    anchor.onTargetFound = () => {
+      playExperience();
+    };
+
+    anchor.onTargetLost = () => {
+      if (videoMesh) videoMesh.visible = false;
+      if (posterMesh) posterMesh.visible = true;
+      setStatus('Target lost.');
+    };
+
+    setStatus('Starting camera…');
+    await mindarThree.start();
+
+    setStatus('Camera started. Looking for target.');
+    renderer.setAnimationLoop(() => renderer.render(scene, camera));
+  } catch (err) {
+    console.error(err);
+    setStatus('AR failed to start: ' + errorToString(err));
+  }
+}
+
+window.addEventListener('load', () => {
+  initialise();
+});
+
+window.addEventListener('error', e => {
+  console.error(e);
+  setStatus('Runtime error: ' + e.message);
+});
+
+window.addEventListener('unhandledrejection', e => {
+  console.error(e);
+  setStatus('Promise error: ' + errorToString(e.reason));
+});
+</script>
+</body>
+</html>
