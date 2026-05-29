@@ -21,8 +21,58 @@ html,body{
   inset:0;
   background:#000;
 }
+
+/* Start overlay */
+#startOverlay{
+  position:fixed;
+  inset:0;
+  z-index:1000;
+  display:grid;
+  place-items:center;
+  background:rgba(0,0,0,0.86);
+  color:#fff;
+  text-align:center;
+  padding:24px;
+}
+#startPanel{
+  max-width:420px;
+}
+#startPanel h1{
+  margin:0 0 12px;
+  font-size:28px;
+  line-height:1.1;
+}
+#startPanel p{
+  margin:0 0 22px;
+  font-size:16px;
+  line-height:1.45;
+  opacity:0.9;
+}
+#startButton{
+  appearance:none;
+  border:0;
+  border-radius:999px;
+  padding:14px 22px;
+  font-size:17px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+/* Hidden during normal use, visible only for errors */
 #status{
   display:none;
+  position:fixed;
+  left:12px;
+  right:12px;
+  top:12px;
+  z-index:999;
+  color:#fff;
+  background:rgba(0,0,0,.72);
+  border-radius:12px;
+  padding:10px;
+  font-size:14px;
+  line-height:1.35;
+  white-space:pre-wrap;
 }
 </style>
 
@@ -39,6 +89,15 @@ html,body{
 
 <body>
 <div id="container"></div>
+
+<div id="startOverlay">
+  <div id="startPanel">
+    <h1>Arthur is turning three!</h1>
+    <p>Point your camera at the invite to reveal the magic.</p>
+    <button id="startButton">Tap to start the magic</button>
+  </div>
+</div>
+
 <div id="status"></div>
 
 <script type="module">
@@ -49,31 +108,9 @@ const CONFIG = {
   posterImage: './assets/poster-opening-frame_v01.png',
   videoSrc: './assets/animation_v01.mp4',
 
-  // Real tracked poster size in AR units.
   posterWidth: 1,
   posterHeight: 1.414,
 
-  /*
-    VIDEO OVERSCAN SETTINGS
-
-    Use these when your WebM canvas is larger than the actual poster area.
-
-    Example:
-    - Your WebM canvas is 1920 x 2700
-    - The central poster artwork inside the WebM is 1440 x 2036
-    - The poster artwork is centred in the WebM
-
-    Then set:
-    videoCanvasWidth: 1920,
-    videoCanvasHeight: 2700,
-    videoPosterWidth: 1440,
-    videoPosterHeight: 2036,
-    videoPosterCenterX: 0.5,
-    videoPosterCenterY: 0.5
-
-    The video plane will become larger than the target, while the
-    central poster-area of the video aligns to the physical target.
-  */
   videoCanvasWidth: 1748,
   videoCanvasHeight: 2480,
   videoPosterWidth: 1748,
@@ -90,10 +127,18 @@ function getVideoPlaneTransform() {
   return { width, height, x, y };
 }
 
-function setStatus(message) {
+function setStatus(message, showToUser = false) {
   const status = document.getElementById('status');
   status.textContent = message;
   console.log(message);
+
+  if (showToUser) {
+    status.style.display = 'block';
+  }
+}
+
+function showError(message) {
+  setStatus(message, true);
 }
 
 function errorToString(err) {
@@ -146,10 +191,20 @@ function makeVideoElement(src) {
   video.defaultMuted = true;
   video.loop = true;
   video.preload = 'auto';
-  video.autoplay = true;
+  video.autoplay = false;
   video.style.display = 'none';
   document.body.appendChild(video);
   return video;
+}
+
+async function primeVideo(video) {
+  try {
+    await video.play();
+    video.pause();
+    video.currentTime = 0;
+  } catch (err) {
+    console.warn('Video priming failed:', err);
+  }
 }
 
 function loadTexture(url) {
@@ -170,6 +225,7 @@ let posterMesh;
 let videoMesh;
 let video;
 let hasStartedOnce = false;
+let isInitialised = false;
 
 async function playExperience() {
   if (!video || !videoMesh || !posterMesh) return;
@@ -187,17 +243,21 @@ async function playExperience() {
     setStatus('Target found — looping video.');
   } catch (err) {
     console.warn('Video play failed:', err);
-    setStatus('Video play failed: ' + errorToString(err));
+    showError('Video play failed. Please tap the screen once, then point at the invite again.');
   }
 }
 
 async function initialise() {
+  if (isInitialised) return;
+  isInitialised = true;
+
   try {
     setStatus('Checking files…');
     await checkFiles();
 
     setStatus('Preparing video…');
     video = makeVideoElement(CONFIG.videoSrc);
+    await primeVideo(video);
 
     const videoTexture = new THREE.VideoTexture(video);
     videoTexture.colorSpace = THREE.SRGBColorSpace;
@@ -256,22 +316,26 @@ async function initialise() {
     renderer.setAnimationLoop(() => renderer.render(scene, camera));
   } catch (err) {
     console.error(err);
-    setStatus('AR failed to start: ' + errorToString(err));
+    showError('AR failed to start: ' + errorToString(err));
+    document.getElementById('startOverlay').style.display = 'grid';
+    isInitialised = false;
   }
 }
 
-window.addEventListener('load', () => {
-  initialise();
+document.getElementById('startButton').addEventListener('click', async () => {
+  document.getElementById('startOverlay').style.display = 'none';
+  document.getElementById('status').style.display = 'none';
+  await initialise();
 });
 
 window.addEventListener('error', e => {
   console.error(e);
-  setStatus('Runtime error: ' + e.message);
+  showError('Runtime error: ' + e.message);
 });
 
 window.addEventListener('unhandledrejection', e => {
   console.error(e);
-  setStatus('Promise error: ' + errorToString(e.reason));
+  showError('Promise error: ' + errorToString(e.reason));
 });
 </script>
 </body>
